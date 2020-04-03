@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float jumpSpeed = 30.0f;
-    public float gravity = 55.0f;
+    public float jumpSpeed = 100.0f;
+    public float gravity = 30f;
     public float runSpeed = 70.0f;
     public float runSpeed1 = 70.0f;
     public float runSpeed2 = 140.0f;
@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject camera1;
     public CharacterController controller;
     public bool isJumping;
-    private float myAng = 0.0f;
+    private float myAng = 51.0f;
     public bool canJump = true;
 
     public bool isFuture = true;
@@ -32,29 +32,45 @@ public class PlayerMovement : MonoBehaviour
     public Renderer[] fRenderer;
     public Renderer[] pRenderer;
 
+    public GameObject[] clues;
+    public GameObject[] audioLogs;
+    public bool audioLogPlaying = false;
+    public bool allowAudioLog = true;
+    public string readout;
 
-    public GameObject[] audioRecordings;
+    public int jetStrength = 30;
+
     void Start()
     {
 
         controller = GetComponent<CharacterController>();
-           isPast = false;
-}
+        isPast = false;
+    }
+
+
+    private void OnGUI()
+    {
+
+    }
 
     void Update()
     {
-      
+        //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
+        //{
+        //    audioLogPlaying = false;
+        //    //allowAudioLog = false;
+        //}
+        //else
+        //{
+        //    allowAudioLog = true;
+        //}
         //force controller down slope. Disable jumping
-        if (myAng > 50)
-        {
 
-            canJump = false;
-        }
-        else
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-
-            canJump = true;
+            moveDirection.y = jetStrength;
         }
+
 
         if (grounded)
         {
@@ -84,7 +100,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-
+        
+      
 
         // Allow turning at anytime. Keep the character facing in the same direction as the Camera if the right mouse button is down.
 
@@ -128,15 +145,43 @@ public class PlayerMovement : MonoBehaviour
         }
 
         grounded = (flags & CollisionFlags.Below) != 0;
-        audioRecordings = GameObject.FindGameObjectsWithTag("Audio Recording");
-        if ( Input.GetButtonDown("Fire1"))
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 1000))
         {
-            audioRecordings[0].GetComponent<AudioSource>().Play();
+            for (int i = 0; i < clues.Length+1; i++)
+            {
+                if (hit.rigidbody == audioLogs[i].GetComponent<Rigidbody>() && Input.GetMouseButtonDown(0))
+                {
+                    audioLogs[i].gameObject.GetComponent<AudioSource>().Play();
+                    break;
+                }
+            }
+            for (int i = 0; i < clues.Length; i++)
+                if (hit.rigidbody == clues[i])
+                {
+                    readout = clues[i].gameObject.GetComponent<string>();
+                }
+                else if (hit.rigidbody == audioLogs[i])
+                {
+                    Debug.Log("Hit");
+
+                    break;
+                }
+
+
+
+            //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
+        }
+        {
+
         }
         //Future Machine Controller
         fObjects = GameObject.FindGameObjectsWithTag("Future Object");
         pObjects = GameObject.FindGameObjectsWithTag("Past Object");
-       
+
         if (Input.GetKeyDown(KeyCode.Q) && isFuture)
         {
             isFuture = false;
@@ -155,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
                 fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
                 fObjects[i].gameObject.GetComponent<Collider>().enabled = false;
 
-                
+
             }
 
             for (int i = 0; i < pObjects.Length; i++)
@@ -179,11 +224,14 @@ public class PlayerMovement : MonoBehaviour
                 pObjects[i].gameObject.GetComponent<Collider>().enabled = false;
             }
         }
-    }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-
-        myAng = Vector3.Angle(Vector3.up, hit.normal);
     }
 }
+
+//    void OnControllerColliderHit(ControllerColliderHit hit)
+//    {
+
+//        myAng = Vector3.Angle(Vector3.up, hit.normal);
+//        Debug.Log(myAng);
+//    }
+//}
