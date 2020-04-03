@@ -96,7 +96,7 @@ public class UserCamera : MonoBehaviour
             }
             else
             {
-                if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+                if (Input.GetMouseButton(0) || Input.GetMouseButton(2))
                 {
                     //Check to see if mouse input is allowed on the axis
                     if (allowMouseInputX)
