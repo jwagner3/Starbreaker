@@ -39,6 +39,11 @@ public class PlayerMovement : MonoBehaviour
     public string readout;
 
     public int jetStrength = 30;
+    public int jetFuel = 100;
+    public Texture2D jetFuelBar;
+    public GUIStyle jetBarStyle;
+
+    public ParticleSystem jetParticles;
 
     void Start()
     {
@@ -50,7 +55,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnGUI()
     {
-
+        jetBarStyle.normal.background = jetFuelBar;
+        GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
     }
 
     void Update()
@@ -66,17 +72,38 @@ public class PlayerMovement : MonoBehaviour
         //}
         //force controller down slope. Disable jumping
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && jetFuel > 0)
         {
             moveDirection.y = jetStrength;
+            jetFuel -= 5;
+            StartCoroutine("Jetpack");
         }
+        if (!grounded)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                moveDirection.x -= jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                moveDirection.x += jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                moveDirection.z += jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                moveDirection.z -= jetStrength;
+            }
+        }
+
 
 
         if (grounded)
         {
 
             isJumping = false;
-
             if (camera1.transform.gameObject.transform.GetComponent<UserCamera>().inFirstPerson == true)
             {
                 moveDirection = new Vector3((Input.GetMouseButton(0) ? Input.GetAxis("Horizontal") : 0), 0, Input.GetAxis("Vertical"));
@@ -84,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             moveDirection = transform.TransformDirection(moveDirection);
+
             moveDirection *= isWalking ? walkSpeed : runSpeed;
 
             moveStatus = "idle";
@@ -100,8 +128,8 @@ public class PlayerMovement : MonoBehaviour
             }
 
         }
-        
-      
+
+
 
         // Allow turning at anytime. Keep the character facing in the same direction as the Camera if the right mouse button is down.
 
@@ -151,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000))
         {
-            for (int i = 0; i < clues.Length+1; i++)
+            for (int i = 0; i < clues.Length + 1; i++)
             {
                 if (hit.rigidbody == audioLogs[i].GetComponent<Rigidbody>() && Input.GetMouseButtonDown(0))
                 {
@@ -179,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
         //Future Machine Controller
+        //If you want to make an object past or future, it must have a collider and a mesh renderer
         fObjects = GameObject.FindGameObjectsWithTag("Future Object");
         pObjects = GameObject.FindGameObjectsWithTag("Past Object");
 
@@ -225,6 +254,13 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+    }
+
+    public IEnumerator Jetpack()
+    {
+        jetParticles.Play();
+        yield return new WaitForSecondsRealtime(.5f);
+        jetParticles.Stop();
     }
 }
 

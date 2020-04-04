@@ -49,12 +49,20 @@ public class HoldandThrow : MonoBehaviour
                     item = hit.rigidbody.gameObject;
                 }
             }
+            else
+            {
+
+            }
             if (hit.rigidbody.gameObject.tag == "Item")
             {
                 if (canHold&&Input.GetMouseButtonDown(0))
                 {
                     item = null;
                 }
+            }
+            else
+            {
+
             }
 
         }

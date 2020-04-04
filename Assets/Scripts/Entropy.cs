@@ -17,6 +17,7 @@ public class Entropy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         gameObject.transform.LookAt(player.transform.position);
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
     }
