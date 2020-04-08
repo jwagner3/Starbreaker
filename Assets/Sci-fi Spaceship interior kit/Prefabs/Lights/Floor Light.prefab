@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 108000012278564596}
   m_Layer: 0
   m_Name: Spotlight
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.78676474, g: 0.9647059, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 8
   m_Range: 3
   m_SpotAngle: 79
   m_InnerSpotAngle: 61.29278
