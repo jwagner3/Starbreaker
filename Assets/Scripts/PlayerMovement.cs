@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -45,9 +46,33 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem jetParticles;
 
-    void Start()
-    {
+    //Text bools
+    public GameObject canvas;
+    public Scene clueFinder;
+    public GUIStyle textStyle;
+    public bool textOnScreen = false;
+    public bool entryMessage;
+    public bool[] messagesB;
+    public bool clue1;
+    public bool clue2;
+    public bool clue3;
+    public bool clue4;
+    public List<string> messages = new List<string>(10);
+    public string entryMessageS = "Welcome, this is the entry message";
+    public string clue1S;
+    public string clue2S;
+    public string clue3S;
+    public string clue4S;
 
+    void Awake()
+    {
+        entryMessage = true;
+        messages[0] = entryMessageS;
+        messages[1] = clue1S;
+        messages[2] = clue2S;
+        messages[3] = clue3S;
+        messages[4] = clue4S;
+        StartCoroutine("TextDisappear");
         controller = GetComponent<CharacterController>();
         isPast = false;
     }
@@ -56,7 +81,17 @@ public class PlayerMovement : MonoBehaviour
     private void OnGUI()
     {
         jetBarStyle.normal.background = jetFuelBar;
+
         GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
+
+        if (!textOnScreen)
+        {
+            if (entryMessage)
+            {
+                GUI.Box(new Rect(Screen.height/2, Screen.width/2, 50, 30), messages[0], textStyle);
+                
+            }
+        }
     }
 
     void Update()
@@ -262,7 +297,26 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSecondsRealtime(.5f);
         jetParticles.Stop();
     }
+
+    public IEnumerator TextDisappear()
+    {
+
+        if (textOnScreen)
+        {
+            yield return new WaitForSecondsRealtime(1);
+
+            for (int i = 0; i > messages.Count; i++)
+            {
+                if (messagesB[i])
+                {
+                    messagesB[i] = false;
+                }
+            }
+        }
+    }
 }
+
+
 
 //    void OnControllerColliderHit(ControllerColliderHit hit)
 //    {
