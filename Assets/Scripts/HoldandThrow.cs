@@ -41,8 +41,8 @@ public class HoldandThrow : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 20))
             {
-            Debug.Log("hit");
-            if (hit.rigidbody.gameObject.tag == "Item")
+            
+            if (hit.rigidbody.gameObject.tag == "Item" || hit.rigidbody.gameObject.tag == "Clue")
             {
                 if (!item && canHold)
                 {
@@ -53,7 +53,7 @@ public class HoldandThrow : MonoBehaviour
             {
 
             }
-            if (hit.rigidbody.gameObject.tag == "Item")
+            if (hit.rigidbody.gameObject.tag == "Item" || hit.rigidbody.gameObject.tag == "Clue")
             {
                 if (canHold&&Input.GetMouseButtonDown(0))
                 {

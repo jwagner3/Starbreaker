@@ -2622,11 +2622,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100134, guid: 39d03f82786b57d41af8bd27bce84402, type: 3}
       propertyPath: m_Name
-      value: skeleton_animated
+      value: skeleton
       objectReference: {fileID: 0}
     - target: {fileID: 100134, guid: 39d03f82786b57d41af8bd27bce84402, type: 3}
       propertyPath: m_TagString
-      value: Item
+      value: Clue
       objectReference: {fileID: 0}
     - target: {fileID: 400134, guid: 39d03f82786b57d41af8bd27bce84402, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5466,11 +5466,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5199868714741298278, guid: be9e631ec0385c44388469e39a416224,
         type: 3}
-      propertyPath: messages.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5199868714741298278, guid: be9e631ec0385c44388469e39a416224,
-        type: 3}
       propertyPath: camera1
       value: 
       objectReference: {fileID: 963194225}
@@ -5509,6 +5504,16 @@ PrefabInstance:
       propertyPath: jetParticles
       value: 
       objectReference: {fileID: 1557144946}
+    - target: {fileID: 5199868714741298278, guid: be9e631ec0385c44388469e39a416224,
+        type: 3}
+      propertyPath: clue2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5199868714741298278, guid: be9e631ec0385c44388469e39a416224,
+        type: 3}
+      propertyPath: clue1
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8792371781864991835, guid: be9e631ec0385c44388469e39a416224,
         type: 3}
       propertyPath: playOnAwake

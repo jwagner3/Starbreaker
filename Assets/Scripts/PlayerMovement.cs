@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed1 = 70.0f;
     public float runSpeed2 = 140.0f;
     private float walkSpeed = 90.0f;
-    private float rotateSpeed = 150.0f;
+  
 
     public bool grounded;
     private Vector3 moveDirection = Vector3.zero;
@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     public GameObject camera1;
     public CharacterController controller;
     public bool isJumping;
-    private float myAng = 51.0f;
     public bool canJump = true;
 
     public bool isFuture = true;
@@ -51,28 +50,39 @@ public class PlayerMovement : MonoBehaviour
     public Scene clueFinder;
     public GUIStyle textStyle;
     public bool textOnScreen = false;
-    public bool entryMessage;
-    public bool[] messagesB;
+    public bool entryMessageB = true;
+    public List<bool> messagesB = new List<bool>(10);
     public bool clue1;
     public bool clue2;
     public bool clue3;
     public bool clue4;
+    public bool clue5;
     public List<string> messages = new List<string>(10);
     public string entryMessageS = "Welcome, this is the entry message";
-    public string clue1S;
+    public string clue1S = "This seems to be the skeleton of the captain. Not event space barracudas could strip flesh so quickly";
     public string clue2S;
     public string clue3S;
     public string clue4S;
+    public string clue5S;
 
-    void Awake()
+    void Start()
     {
-        entryMessage = true;
-        messages[0] = entryMessageS;
-        messages[1] = clue1S;
-        messages[2] = clue2S;
-        messages[3] = clue3S;
-        messages[4] = clue4S;
-        StartCoroutine("TextDisappear");
+     
+        messages.Add(entryMessageS);
+        messages.Add(clue1S);
+        messages.Add(clue2S);
+        messages.Add(clue3S);
+        messages.Add(clue4S);
+        messages.Add(clue4S);
+
+        messagesB.Add(entryMessageB);
+        messagesB.Add(clue1);
+        messagesB.Add(clue2);
+        messagesB.Add(clue3);
+        messagesB.Add(clue4);
+        messagesB.Add(clue5);
+        
+      
         controller = GetComponent<CharacterController>();
         isPast = false;
     }
@@ -84,18 +94,34 @@ public class PlayerMovement : MonoBehaviour
 
         GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
 
-        if (!textOnScreen)
-        {
-            if (entryMessage)
+        
+            if (messagesB[0])
             {
                 GUI.Box(new Rect(Screen.height/2, Screen.width/2, 50, 30), messages[0], textStyle);
-                
+            StartCoroutine("TextDisappear");               
             }
+        if (messagesB[1])
+        {
+            GUI.Box(new Rect(Screen.height / 2, Screen.width / 2, 50, 30), messages[1], textStyle);
+            StartCoroutine("TextDisappear");
         }
+        
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            { 
+
+                for (int i = 0; i > messagesB.Count; i++)
+                {
+                    if (messagesB[i])
+                    {
+                        messagesB[i] = false;
+                    }
+                }
+    }
+
         //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
         //{
         //    audioLogPlaying = false;
@@ -233,7 +259,12 @@ public class PlayerMovement : MonoBehaviour
 
                     break;
                 }
-
+            if (hit.rigidbody.name == "skeleton" && Input.GetMouseButtonDown(0))
+            {
+                Debug.Log(messages[1]);
+                messagesB[1] = true;
+                OnGUI();
+            }
 
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
@@ -301,20 +332,20 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator TextDisappear()
     {
 
-        if (textOnScreen)
-        {
-            yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(.5f);
 
-            for (int i = 0; i > messages.Count; i++)
-            {
-                if (messagesB[i])
-                {
-                    messagesB[i] = false;
-                }
-            }
+        for (int i = 0; i < messages.Count; i++)
+        {
+            if (messagesB[i]) { }
+            messagesB[i] = false;
+
+           
         }
+        }
+
+
     }
-}
+
 
 
 

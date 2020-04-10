@@ -9,6 +9,7 @@ TagManager:
   - Audio Recording
   - Item
   - Light
+  - Clue
   layers:
   - Default
   - TransparentFX
