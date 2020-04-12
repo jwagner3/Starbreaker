@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject canvas;
     public Scene clueFinder;
     public GUIStyle textStyle;
+    public Font mainText;
     public bool textOnScreen = false;
     public bool entryMessageB = true;
     public List<bool> messagesB = new List<bool>(10);
@@ -58,16 +59,21 @@ public class PlayerMovement : MonoBehaviour
     public bool clue4;
     public bool clue5;
     public List<string> messages = new List<string>(10);
-    public string entryMessageS = "Welcome, this is the entry message";
+    public string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. " + "/n" + "We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage.The Empire of Life rests in your hands, Salutarian.Don’t fail us.";
+
     public string clue1S = "This seems to be the skeleton of the captain. Not event space barracudas could strip flesh so quickly";
     public string clue2S;
     public string clue3S;
     public string clue4S;
     public string clue5S;
 
+    public float hp = 100;
+
     void Start()
     {
-     
+        textStyle.wordWrap = true;
+        textStyle.fontSize = 20;
+        textStyle.font = mainText;
         messages.Add(entryMessageS);
         messages.Add(clue1S);
         messages.Add(clue2S);
@@ -93,11 +99,12 @@ public class PlayerMovement : MonoBehaviour
         jetBarStyle.normal.background = jetFuelBar;
 
         GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
+        GUI.Box(new Rect(200, 30, 30, hp * 5), "Life: " + hp, jetBarStyle);
 
         
             if (messagesB[0])
             {
-                GUI.Box(new Rect(Screen.height/2, Screen.width/2, 50, 30), messages[0], textStyle);
+                GUI.Box(new Rect(700,300, 300, 150), messages[0], textStyle);
             StartCoroutine("TextDisappear");               
             }
         if (messagesB[1])
@@ -110,6 +117,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(hp <= 0)
+        {
+            SceneManager.LoadScene("Defeat");
+        }
         if (Input.GetKeyDown(KeyCode.Alpha1))
             { 
 
@@ -263,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log(messages[1]);
                 messagesB[1] = true;
-                OnGUI();
+             
             }
 
 
@@ -332,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator TextDisappear()
     {
 
-        yield return new WaitForSecondsRealtime(.5f);
+        yield return new WaitForSecondsRealtime(5);
 
         for (int i = 0; i < messages.Count; i++)
         {
@@ -342,9 +353,18 @@ public class PlayerMovement : MonoBehaviour
            
         }
         }
+    public void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "Poison")
+        hp -= Time.deltaTime*5; ;
 
-
+        if(other.gameObject.tag == "Entropy")
+        {
+            hp -= Time.deltaTime * 20;
+        }
     }
+
+}
 
 
 

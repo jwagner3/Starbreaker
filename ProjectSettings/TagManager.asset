@@ -10,6 +10,8 @@ TagManager:
   - Item
   - Light
   - Clue
+  - Poison
+  - Entropy
   layers:
   - Default
   - TransparentFX
