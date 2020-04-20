@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -50,8 +51,8 @@ public class PlayerMovement : MonoBehaviour
     public Scene clueFinder;
     public GUIStyle textStyle;
     public Font mainText;
-    public bool textOnScreen = false;
-    public bool entryMessageB = true;
+    public bool textOnScreen;
+    public bool entryMessageB;
     public List<bool> messagesB = new List<bool>(10);
     public bool clue1;
     public bool clue2;
@@ -59,13 +60,16 @@ public class PlayerMovement : MonoBehaviour
     public bool clue4;
     public bool clue5;
     public List<string> messages = new List<string>(10);
-    public string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. " + "/n" + "We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage.The Empire of Life rests in your hands, Salutarian.Don’t fail us.";
+    private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us.";
 
-    public string clue1S = "This seems to be the skeleton of the captain. Not event space barracudas could strip flesh so quickly";
+    public string clue1S = "This seems to be the skeleton of the captain. Not even space barracudas could strip flesh so quickly";
     public string clue2S;
     public string clue3S;
     public string clue4S;
     public string clue5S;
+
+    public Text readoutText;
+
 
     public float hp = 100;
 
@@ -91,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
       
         controller = GetComponent<CharacterController>();
         isPast = false;
+        messagesB[0] = true;
     }
 
 
@@ -102,21 +107,31 @@ public class PlayerMovement : MonoBehaviour
         GUI.Box(new Rect(200, 30, 30, hp * 5), "Life: " + hp, jetBarStyle);
 
         
-            if (messagesB[0])
-            {
-                GUI.Box(new Rect(700,300, 300, 150), messages[0], textStyle);
-            StartCoroutine("TextDisappear");               
-            }
-        if (messagesB[1])
-        {
-            GUI.Box(new Rect(Screen.height / 2, Screen.width / 2, 50, 30), messages[1], textStyle);
-            StartCoroutine("TextDisappear");
-        }
+        //    if (messagesB[0])
+        //    {
+        //        GUI.Box(new Rect(700,300, 300, 150), messages[0], textStyle);
+        //    StartCoroutine("TextDisappear");               
+        //    }
+        //if (messagesB[1])
+        //{
+        //    GUI.Box(new Rect(Screen.height / 2, Screen.width / 2, 50, 30), messages[1], textStyle);
+        //    StartCoroutine("TextDisappear");
+        //}
         
     }
 
     void Update()
     {
+        //Check what messages are enabled and knows what to show the player
+        for(int i = 0; i < messages.Count; i++)
+        {
+            if (messagesB[i])
+            {
+                Debug.Log(messagesB[i]);
+                TextReadout(messages[i]);
+                StartCoroutine("TextDisappear");
+            }
+        }
         if(hp <= 0)
         {
             SceneManager.LoadScene("Defeat");
@@ -343,12 +358,13 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator TextDisappear()
     {
 
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(10);
 
         for (int i = 0; i < messages.Count; i++)
         {
             if (messagesB[i]) { }
             messagesB[i] = false;
+            readoutText.text = "";
 
            
         }
@@ -364,6 +380,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+    public void TextReadout(string text)
+    {
+        readoutText.text = text;
+    }
 }
 
 
