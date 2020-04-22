@@ -56,7 +56,7 @@ public class UserCamera : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-
+            inFirstPerson = true;
             if (inFirstPerson == true)
             {
 
@@ -67,6 +67,7 @@ public class UserCamera : MonoBehaviour
             }
         }
 
+
         if (desiredDistance == 10)
         {
 
@@ -76,6 +77,7 @@ public class UserCamera : MonoBehaviour
             inFirstPerson = true;
         }
     }
+
 
     //Only Move camera after everything else has been updated
     void LateUpdate()

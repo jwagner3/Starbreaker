@@ -42,7 +42,7 @@ public class HoldandThrow : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 20))
             {
             
-            if (hit.rigidbody.gameObject.tag == "Item" || hit.rigidbody.gameObject.tag == "Clue")
+            if (hit.rigidbody.gameObject.tag == "Past Object" || hit.rigidbody.gameObject.tag == "Clue" || hit.rigidbody.gameObject.tag == "Future Object")
             {
                 if (!item && canHold)
                 {

@@ -9,6 +9,7 @@ public class Entropy : MonoBehaviour
     public GameObject player;
     public float moveSpeed = 5;
     public GameObject[] lights;
+    public bool active = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,16 @@ public class Entropy : MonoBehaviour
         lights = GameObject.FindGameObjectsWithTag("Light");
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.transform.LookAt(player.transform.position);
-        transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        if (Vector3.Distance(player.transform.position, transform.position) < 30)
+        {
+            active = true;
+           
+        }
+
+        if (active)
+        {
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        }
 
         for (int i = 0; i < lights.Length; i++)
         {

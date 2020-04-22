@@ -60,8 +60,9 @@ public class PlayerMovement : MonoBehaviour
     public bool clue4;
     public bool clue5;
     public List<string> messages = new List<string>(10);
+    private string entryMessageS1 = "Press Q to go backwards and forwards in time. Left click to pick up objects and move the camera. Find the monster within the ship!";
     private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us.";
-
+    private string controlsMessageS = "Press Q to move backwards or forwards in time. This should help you navigate obstacles and obtain clues.";
     public string clue1S = "This seems to be the skeleton of the captain. Not even space barracudas could strip flesh so quickly";
     public string clue2S;
     public string clue3S;
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Text readoutText;
 
+    LayerMask pastObjects;
 
     public float hp = 100;
 
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnGUI()
     {
         jetBarStyle.normal.background = jetFuelBar;
-
+        jetBarStyle.normal.textColor = Color.green;
         GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
         GUI.Box(new Rect(200, 30, 30, hp * 5), "Life: " + hp, jetBarStyle);
 
@@ -122,8 +124,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(Time.deltaTime > 20 && Time.deltaTime < 50)
+        {
+            messagesB[1] = true;
+        }
+        TimeMachine();
         //Check what messages are enabled and knows what to show the player
-        for(int i = 0; i < messages.Count; i++)
+        for (int i = 0; i < messages.Count; i++)
         {
             if (messagesB[i])
             {
@@ -132,21 +139,21 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine("TextDisappear");
             }
         }
-        if(hp <= 0)
+        if (hp <= 0)
         {
             SceneManager.LoadScene("Defeat");
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            { 
+        {
 
-                for (int i = 0; i > messagesB.Count; i++)
+            for (int i = 0; i > messagesB.Count; i++)
+            {
+                if (messagesB[i])
                 {
-                    if (messagesB[i])
-                    {
-                        messagesB[i] = false;
-                    }
+                    messagesB[i] = false;
                 }
-    }
+            }
+        }
 
         //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
         //{
@@ -185,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-
+        //camera1.transform.gameObject.transform.GetComponent<UserCamera>().inFirstPerson = true;
 
         if (grounded)
         {
@@ -289,17 +296,26 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log(messages[1]);
                 messagesB[1] = true;
-             
+
             }
 
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
         }
-        {
+    }
 
-        }
-        //Future Machine Controller
-        //If you want to make an object past or future, it must have a collider and a mesh renderer
+
+
+    //Future Machine Controller
+    //If you want to make an object past or future, it must have a collider and a mesh renderer
+
+
+
+
+
+
+    public void TimeMachine()
+    {
         fObjects = GameObject.FindGameObjectsWithTag("Future Object");
         pObjects = GameObject.FindGameObjectsWithTag("Past Object");
 
@@ -318,16 +334,29 @@ public class PlayerMovement : MonoBehaviour
 
             for (int i = 0; i < fObjects.Length; i++)
             {
-                fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
-                fObjects[i].gameObject.GetComponent<Collider>().enabled = false;
+                if (fObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
+                    fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
+                if (fObjects[i].gameObject.GetComponent<Collider>() != null)
+                    fObjects[i].gameObject.GetComponent<Collider>().enabled = false;
+                if (fObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
+                {
+                    fObjects[i].gameObject.GetComponent<ParticleSystem>().Stop();
+                }
 
 
             }
 
             for (int i = 0; i < pObjects.Length; i++)
             {
-                pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
-                pObjects[i].gameObject.GetComponent<Collider>().enabled = true;
+                if (pObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
+                    pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                if (pObjects[i].gameObject.GetComponent<Collider>() != null)
+                    pObjects[i].gameObject.GetComponent<Collider>().enabled = true;
+                if (pObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
+                {
+                    pObjects[i].gameObject.GetComponent<ParticleSystem>().Play();
+                }
+
             }
         }
         else if (isFuture)
@@ -335,18 +364,30 @@ public class PlayerMovement : MonoBehaviour
 
             for (int i = 0; i < fObjects.Length; i++)
             {
-                fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
-                fObjects[i].gameObject.GetComponent<Collider>().enabled = true;
+                if (fObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
+                    fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                if (fObjects[i].gameObject.GetComponent<Collider>() != null)
+                    fObjects[i].gameObject.GetComponent<Collider>().enabled = true;
+                if (fObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
+                {
+                    fObjects[i].gameObject.GetComponent<ParticleSystem>().Play();
+                }
             }
 
             for (int i = 0; i < pObjects.Length; i++)
             {
-                pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
-                pObjects[i].gameObject.GetComponent<Collider>().enabled = false;
+                if (pObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
+                    pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
+                if (pObjects[i].gameObject.GetComponent<Collider>() != null)
+                    pObjects[i].gameObject.GetComponent<Collider>().enabled = false;
+                if (pObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
+                {
+                    pObjects[i].gameObject.GetComponent<ParticleSystem>().Stop();
+                }
             }
         }
-
     }
+
 
     public IEnumerator Jetpack()
     {
@@ -371,12 +412,25 @@ public class PlayerMovement : MonoBehaviour
         }
     public void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag == "Poison")
-        hp -= Time.deltaTime*5; ;
+        if (other.gameObject.tag == "Poison" && isFuture)
+            hp -= Time.deltaTime * 5; ;
 
-        if(other.gameObject.tag == "Entropy")
+        if (other.gameObject.tag == "Entropy")
         {
             hp -= Time.deltaTime * 20;
+        }
+
+        if (other.tag == "Gravity Field")
+        {
+            gravity = 10;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Gravity Field")
+        {
+            gravity = 30;
         }
     }
 
