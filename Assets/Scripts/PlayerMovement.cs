@@ -75,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float hp = 100;
 
+    public int keyCount = 0;
+
     void Start()
     {
         textStyle.wordWrap = true;

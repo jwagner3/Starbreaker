@@ -13,6 +13,7 @@ TagManager:
   - Poison
   - Entropy
   - Gravity Field
+  - Last Door
   layers:
   - Default
   - TransparentFX
