@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
   
 
     public bool grounded;
-    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
     private bool isWalking;
     private string moveStatus = "idle";
 
@@ -176,22 +176,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!grounded)
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                moveDirection.x -= jetStrength;
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                moveDirection.x += jetStrength;
-            }
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                moveDirection.z += jetStrength;
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                moveDirection.z -= jetStrength;
-            }
+            moveDirection = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
         }
 
         //camera1.transform.gameObject.transform.GetComponent<UserCamera>().inFirstPerson = true;

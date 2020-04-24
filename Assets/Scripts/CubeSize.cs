@@ -10,9 +10,11 @@ public class CubeSize : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rand1 = Random.Range(0, 10);
+        rand1 = Random.Range(0, 20);
         rand2 = Random.Range(0, 10);
-        rand3 = Random.Range(0, 10);
+        rand3 = Random.Range(0, 20);
+
+       
 
         gameObject.transform.localScale = new Vector3(rand1, rand2,rand3);
     }
