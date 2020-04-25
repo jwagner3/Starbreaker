@@ -15,6 +15,7 @@ TagManager:
   - Gravity Field
   - Last Door
   - Key
+  - Airlock
   layers:
   - Default
   - TransparentFX

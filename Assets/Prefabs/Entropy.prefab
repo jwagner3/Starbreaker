@@ -9620,6 +9620,7 @@ MonoBehaviour:
   player: {fileID: 0}
   moveSpeed: 5
   lights: []
+  active: 0
 --- !u!1 &2559309877710777230
 GameObject:
   m_ObjectHideFlags: 0
@@ -9788,7 +9789,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -10062,7 +10063,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -10115,7 +10116,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -10168,8 +10169,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotation:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 3.1415925
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10280,7 +10281,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 1
+    angle: 20
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -14329,7 +14330,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 66ba57906c9ad434ba8cacc32febb43d, type: 2}
+  - {fileID: 2100000, guid: 98b3e9a294cc7564eaa29902355ffd09, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0

@@ -71,9 +71,11 @@ public class PlayerMovement : MonoBehaviour
 
     public Text readoutText;
 
-    LayerMask pastObjects;
+    public Light flashLight;
 
     public float hp = 100;
+
+    public GameObject entropy;
 
     public int keyCount = 0;
 
@@ -305,13 +307,20 @@ public class PlayerMovement : MonoBehaviour
 
      public void Flashlight()
     {
-        if (Input.GetKeyDown(KeyCode.E) && camera1.GetComponent<Light>().enabled)
+        if (entropy.GetComponent<Entropy>().active != true)
         {
-            camera1.GetComponent<Light>().enabled = false;
+            if (Input.GetKeyDown(KeyCode.E) && flashLight.intensity > 0)
+            {
+                flashLight.intensity = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                flashLight.intensity = 10;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+        else
         {
-            camera1.GetComponent<Light>().enabled = true;
+            flashLight.intensity = 0;
         }
     }
 

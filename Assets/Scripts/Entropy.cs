@@ -23,7 +23,8 @@ public class Entropy : MonoBehaviour
         lights = GameObject.FindGameObjectsWithTag("Light");
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.transform.LookAt(player.transform.position);
-        if (Vector3.Distance(player.transform.position, transform.position) < 30)
+
+        if (Vector3.Distance(player.transform.position, transform.position) < 100)
         {
             active = true;
            
