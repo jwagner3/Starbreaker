@@ -14,6 +14,7 @@ TagManager:
   - Entropy
   - Gravity Field
   - Last Door
+  - Key
   layers:
   - Default
   - TransparentFX

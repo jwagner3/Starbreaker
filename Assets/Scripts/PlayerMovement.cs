@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
             messagesB[1] = true;
         }
         TimeMachine();
+        Flashlight();
         //Check what messages are enabled and knows what to show the player
         for (int i = 0; i < messages.Count; i++)
         {
@@ -285,6 +286,12 @@ public class PlayerMovement : MonoBehaviour
                 messagesB[1] = true;
 
             }
+            if(hit.rigidbody.tag == "Key" && Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Hit key");
+                Destroy(hit.rigidbody.gameObject);
+                keyCount++;
+            }
 
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
@@ -296,7 +303,17 @@ public class PlayerMovement : MonoBehaviour
     //Future Machine Controller
     //If you want to make an object past or future, it must have a collider and a mesh renderer
 
-
+     public void Flashlight()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && camera1.GetComponent<Light>().enabled)
+        {
+            camera1.GetComponent<Light>().enabled = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            camera1.GetComponent<Light>().enabled = true;
+        }
+    }
 
 
 

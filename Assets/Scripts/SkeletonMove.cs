@@ -12,9 +12,9 @@ public class SkeletonMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        randomNum1 = Random.Range(-10, 10);
-        randomNum2 = Random.Range(-10, 10);
-        randomNum3 = Random.Range(-10, 10);
+        randomNum1 = Random.Range(-20, 20);
+        randomNum2 = Random.Range(-20, 20);
+        randomNum3 = Random.Range(-20, 20);
         gameObject.GetComponent<Rigidbody>().AddForce(randomNum1*10, randomNum2*10, randomNum3*10);
     }
 
