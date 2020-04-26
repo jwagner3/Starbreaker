@@ -6,7 +6,7 @@ public class ObstacleSpawner : MonoBehaviour
 {
 
     public GameObject cube;
-    public int cubeNumber = 15;
+    public int cubeNumber = 25;
     // Start is called before the first frame update
     void Start()
     {

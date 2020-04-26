@@ -52,19 +52,23 @@ public class PlayerMovement : MonoBehaviour
     public GUIStyle textStyle;
     public Font mainText;
     public bool textOnScreen;
-    public bool entryMessageB;
     public List<bool> messagesB = new List<bool>(10);
+    public bool entryMessageB;
+    public bool controlsMessageB;
     public bool clue1;
     public bool clue2;
+    public bool warning1;
+    public bool response1;
     public bool clue3;
     public bool clue4;
     public bool clue5;
     public List<string> messages = new List<string>(10);
     private string entryMessageS1 = "Press Q to go backwards and forwards in time. Left click to pick up objects and move the camera. Find the monster within the ship!";
-    private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us.";
-    private string controlsMessageS = "Press Q to move backwards or forwards in time. This should help you navigate obstacles and obtain clues.";
-    public string clue1S = "This seems to be the skeleton of the captain. Not even space barracudas could strip flesh so quickly";
-    public string clue2S;
+    private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us. -Project Excelsior Lead Astra Montreu";
+    private string clue1S = "Hmm, it seems like this support beam collapsed on him. There are signs of a struggle within the room, indicating he was chased. He’s missing all of his flesh as well, which suggests perhaps a scavenger has made its way onto the ship. I’ll need to proceed with caution. I’ll need his key to investigate the reactor room, along with at least two other keys from various crew members.";
+    private string clue2S = "It seems as if one of the pipes ruptured during a struggle. Chlorine seems to have killed this group of engineers, but they’re all missing their skin, which suggests the aggressor isn’t among their number. What sort of monster could do this?";
+    private string warning1S = "Be advised, Salutarian, we're getting wildly varying readings from the reactor. If you stay on the ship much longer, we won't be able to guarentee your safety. -Project Excelsior Lead Astra Montreu";
+    private string response1S = "There's only a few more rooms to search, and this might be our only chance to discover what really happened here.";
     public string clue3S;
     public string clue4S;
     public string clue5S;
@@ -85,15 +89,21 @@ public class PlayerMovement : MonoBehaviour
         textStyle.fontSize = 20;
         textStyle.font = mainText;
         messages.Add(entryMessageS);
+        messages.Add(entryMessageS1);
         messages.Add(clue1S);
         messages.Add(clue2S);
+        messages.Add(warning1S);
+        messages.Add(response1S);
         messages.Add(clue3S);
         messages.Add(clue4S);
         messages.Add(clue4S);
 
         messagesB.Add(entryMessageB);
+        messagesB.Add(controlsMessageB);
         messagesB.Add(clue1);
         messagesB.Add(clue2);
+        messagesB.Add(warning1);
+        messagesB.Add(response1);
         messagesB.Add(clue3);
         messagesB.Add(clue4);
         messagesB.Add(clue5);
@@ -282,19 +292,35 @@ public class PlayerMovement : MonoBehaviour
 
                     break;
                 }
-            if (hit.rigidbody.name == "skeleton" && Input.GetMouseButtonDown(0))
+            if (hit.rigidbody.name == "skeleton pillar" && Input.GetMouseButtonDown(0))
             {
-                Debug.Log(messages[1]);
-                messagesB[1] = true;
+                Debug.Log(messages[2]);
+                messagesB[2] = true;
 
             }
-            if(hit.rigidbody.tag == "Key" && Input.GetMouseButtonDown(0))
+            if(hit.rigidbody.name == "Crate" && Input.GetMouseButtonDown(0))
+            {
+                messagesB[1] = true;
+            }
+            if (hit.rigidbody.name == "Poison Skeleton" && Input.GetMouseButtonDown(0))
+            {
+                messagesB[3] = true;
+            }
+            if (hit.rigidbody.name == "Key 2" && Input.GetMouseButtonDown(0))
+            {
+                messagesB[4] = true;
+            }
+            if (hit.rigidbody.tag == "Key" && Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Hit key");
                 Destroy(hit.rigidbody.gameObject);
                 keyCount++;
             }
-
+            if (messagesB[4])
+            {
+                StartCoroutine("ResponseOne");
+                messagesB[5] = true;
+            }
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
         }
@@ -417,12 +443,19 @@ public class PlayerMovement : MonoBehaviour
         for (int i = 0; i < messages.Count; i++)
         {
             if (messagesB[i]) { }
+            
             messagesB[i] = false;
             readoutText.text = "";
 
            
         }
-        }
+     }
+
+    public IEnumerator ResponseOne()
+    {
+        yield return new WaitForSecondsRealtime(10.1f);
+        
+    }
     public void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Poison" && isFuture)
