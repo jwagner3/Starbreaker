@@ -19,9 +19,11 @@ public class Door : MonoBehaviour
         {
             OpenDoor();
         }
-        else
+       if(Vector3.Distance(player.transform.position, transform.position) < 30 && player.GetComponent<PlayerMovement>().keyCount == 3)
         {
-            OpenBossDoor();
+            Debug.Log(player.GetComponent<PlayerMovement>().keyCount);
+            OpenDoor();
+            
         }
         
     }

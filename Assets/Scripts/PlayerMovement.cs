@@ -60,18 +60,23 @@ public class PlayerMovement : MonoBehaviour
     public bool warning1;
     public bool response1;
     public bool clue3;
+    public bool response2;
     public bool clue4;
-    public bool clue5;
+    public bool keyWarning;
+    public bool deathMessage;
     public List<string> messages = new List<string>(10);
     private string entryMessageS1 = "Press Q to go backwards and forwards in time. Left click to pick up objects and move the camera. Find the monster within the ship!";
     private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us. -Project Excelsior Lead Astra Montreu";
     private string clue1S = "Hmm, it seems like this support beam collapsed on him. There are signs of a struggle within the room, indicating he was chased. He’s missing all of his flesh as well, which suggests perhaps a scavenger has made its way onto the ship. I’ll need to proceed with caution. I’ll need his key to investigate the reactor room, along with at least two other keys from various crew members.";
     private string clue2S = "It seems as if one of the pipes ruptured during a struggle. Chlorine seems to have killed this group of engineers, but they’re all missing their skin, which suggests the aggressor isn’t among their number. What sort of monster could do this?";
     private string warning1S = "Be advised, Salutarian, we're getting wildly varying readings from the reactor. If you stay on the ship much longer, we won't be able to guarentee your safety. -Project Excelsior Lead Astra Montreu";
-    private string response1S = "There's only a few more rooms to search, and this might be our only chance to discover what really happened here.";
-    public string clue3S;
-    public string clue4S;
-    public string clue5S;
+    private string response1S = "There's only a few more rooms to search, Astra, and this might be our only chance to discover what really happened here.";
+    private string clue3S = "Incredible, it’s as if gravity itself has disappeared from this part of the ship. More dead crew. Astra, I’m entering the reactor room next. If something happens, well, I never had the right words for you before. Just know I wanted more for us.For all of us.";
+    private string response2S = "“Breaking… Up…. Get.. Out… Sal”";
+    public string keyWarningS = "Hmm, I need at least three keys from the crew to open the reactor door. Maybe there are some in the other rooms";
+    public string deathMessageS = "TIMELINE COLLAPSED: SALUTARIAN MUST SURVIVE. TIMELINE REWOUND";
+
+    private CharacterController playerCharacterController; 
 
     public Text readoutText;
 
@@ -95,8 +100,9 @@ public class PlayerMovement : MonoBehaviour
         messages.Add(warning1S);
         messages.Add(response1S);
         messages.Add(clue3S);
-        messages.Add(clue4S);
-        messages.Add(clue4S);
+        messages.Add(response2S);
+        messages.Add(keyWarningS);
+        messages.Add(deathMessageS);
 
         messagesB.Add(entryMessageB);
         messagesB.Add(controlsMessageB);
@@ -105,8 +111,9 @@ public class PlayerMovement : MonoBehaviour
         messagesB.Add(warning1);
         messagesB.Add(response1);
         messagesB.Add(clue3);
-        messagesB.Add(clue4);
-        messagesB.Add(clue5);
+        messagesB.Add(response2);
+        messagesB.Add(keyWarning);
+        messagesB.Add(deathMessage);
         
       
         controller = GetComponent<CharacterController>();
@@ -156,7 +163,22 @@ public class PlayerMovement : MonoBehaviour
         }
         if (hp <= 0)
         {
-            SceneManager.LoadScene("Defeat");
+            if(entropy.GetComponent<Entropy>().active == true)
+            {
+                controller.enabled = false;
+                controller.transform.position = new Vector3(28.4f, 37.38f, 1901.6f);
+                controller.enabled = true;
+                messagesB[9] = true;
+                hp = 100;
+            }
+            else
+            {
+                controller.enabled = false;
+                transform.position = new Vector3(33.9f, 24.5f, 937.5f);
+                controller.enabled = true;
+                messagesB[9] = true;
+                hp = 100;
+            }
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -170,6 +192,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        
         //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
         //{
         //    audioLogPlaying = false;
@@ -321,6 +344,19 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine("ResponseOne");
                 messagesB[5] = true;
             }
+            if(hit.rigidbody.name == "Key 3" && Input.GetMouseButtonDown(0))
+            {
+                messagesB[6] = true;
+            }
+            if (messagesB[6])
+            {
+                StartCoroutine("ResponseTwo");
+                
+            }
+            if (hit.rigidbody.tag == "Last Door" && keyCount < 3)
+            {
+                messagesB[8] = true;
+            }
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
         }
@@ -455,6 +491,12 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(10.1f);
         
+    }
+    public IEnumerator ResponseTwo()
+    {
+        yield return new WaitForSecondsRealtime(5);
+        messagesB[7] = true;
+        yield return new WaitForSecondsRealtime(5);
     }
     public void OnTriggerStay(Collider other)
     {

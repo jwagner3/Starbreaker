@@ -53,7 +53,10 @@ public class UserCamera : MonoBehaviour
 
     void Update()
     {
-
+        if(userModel.GetComponent<PlayerMovement>().hp <= 0)
+        {
+            transform.position = new Vector3(28.4f, 37.38f, 1901.6f);
+        }
         //if (Input.GetAxis("Mouse ScrollWheel") < 0)W
         //{
         //    inFirstPerson = true;

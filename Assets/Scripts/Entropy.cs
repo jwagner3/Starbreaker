@@ -10,6 +10,7 @@ public class Entropy : MonoBehaviour
     public float moveSpeed = 5;
     public GameObject[] lights;
     public bool active = false;
+    public float playerHP;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,11 @@ public class Entropy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerHP = player.GetComponent<PlayerMovement>().hp;
+        if (playerHP <= 0)
+        {
+            PlayerDeadRelocate();
+        }
         lights = GameObject.FindGameObjectsWithTag("Light");
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.transform.LookAt(player.transform.position);
@@ -30,7 +36,7 @@ public class Entropy : MonoBehaviour
            
         }
 
-        if (active)
+        if (active && playerHP > 0)
         {
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
@@ -45,14 +51,14 @@ public class Entropy : MonoBehaviour
             }
 
 
-        }           
+        }
+        
     }
 
-    private void OnCollisionEnter(Collision collision)
+   
+
+    private void PlayerDeadRelocate()
     {
-        if(collision.gameObject.name == "Player")
-        {
-            SceneManager.LoadScene("Defeat");
-        }
+        gameObject.transform.position = new Vector3(23.14f, 37.38f, 1998.76f);
     }
 }
