@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     public bool clue4;
     public bool keyWarning;
     public bool deathMessage;
+    public bool entropyReaction;
     public List<string> messages = new List<string>(10);
     private string entryMessageS1 = "Press Q to go backwards and forwards in time. Left click to pick up objects and move the camera. Find the monster within the ship!";
     private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us. -Project Excelsior Lead Astra Montreu";
@@ -72,9 +73,10 @@ public class PlayerMovement : MonoBehaviour
     private string warning1S = "Be advised, Salutarian, we're getting wildly varying readings from the reactor. If you stay on the ship much longer, we won't be able to guarentee your safety. -Project Excelsior Lead Astra Montreu";
     private string response1S = "There's only a few more rooms to search, Astra, and this might be our only chance to discover what really happened here.";
     private string clue3S = "Incredible, it’s as if gravity itself has disappeared from this part of the ship. More dead crew. Astra, I’m entering the reactor room next. If something happens, well, I never had the right words for you before. Just know I wanted more for us.For all of us.";
-    private string response2S = "“Breaking… Up…. Get.. Out… Sal”";
-    public string keyWarningS = "Hmm, I need at least three keys from the crew to open the reactor door. Maybe there are some in the other rooms";
-    public string deathMessageS = "TIMELINE COLLAPSED: SALUTARIAN MUST SURVIVE. TIMELINE REWOUND";
+    private string response2S = "“Comms are breaking… Up…. Get.. Out… Sal”";
+    private string keyWarningS = "Hmm, I need at least three keys from the crew to open the reactor door. Maybe there are some in the other rooms";
+    private string deathMessageS = "TIMELINE COLLAPSED: SALUTARIAN MUST SURVIVE. TIMELINE REWOUND";
+    private string entropyReactionS = "Empire preserve us. It's siphoning power from the reactor. It's... aging, the ship around it. It's Entropy, Astra.";
 
     private CharacterController playerCharacterController; 
 
@@ -152,15 +154,7 @@ public class PlayerMovement : MonoBehaviour
         TimeMachine();
         Flashlight();
         //Check what messages are enabled and knows what to show the player
-        for (int i = 0; i < messages.Count; i++)
-        {
-            if (messagesB[i])
-            {
-                Debug.Log(messagesB[i]);
-                TextReadout(messages[i]);
-                StartCoroutine("TextDisappear");
-            }
-        }
+        
         if (hp <= 0)
         {
             if(entropy.GetComponent<Entropy>().active == true)
@@ -357,6 +351,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 messagesB[8] = true;
             }
+            for (int i = 0; i < messages.Count; i++)
+            {
+                if (messagesB[i])
+                {
+                    Debug.Log(messagesB[i]);
+                    TextReadout(messages[i]);
+                    StartCoroutine("TextDisappear");
+                }
+            }
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
         }
@@ -474,7 +477,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator TextDisappear()
     {
 
-        yield return new WaitForSecondsRealtime(10);
+        yield return new WaitForSecondsRealtime(15);
 
         for (int i = 0; i < messages.Count; i++)
         {
@@ -505,12 +508,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (other.gameObject.tag == "Entropy")
         {
-            hp -= Time.deltaTime * 20;
+            hp -= Time.deltaTime * 35;
         }
 
+        if(other.gameObject.name == "Lightning Computer")
+        {
+            hp -= Time.deltaTime * 20;
+        }
         if (other.tag == "Gravity Field")
         {
             gravity = 10;
+        }
+
+        if(other.gameObject.name == "Medkit")
+        {
+            hp += Time.deltaTime * 15;
         }
     }
 

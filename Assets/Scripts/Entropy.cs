@@ -11,6 +11,9 @@ public class Entropy : MonoBehaviour
     public GameObject[] lights;
     public bool active = false;
     public float playerHP;
+    public ParticleSystem body;
+    public ParticleSystem excessParticles;
+    public ParticleSystem lightningBeam;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +42,14 @@ public class Entropy : MonoBehaviour
         if (active && playerHP > 0)
         {
             transform.position += transform.forward * moveSpeed * Time.deltaTime;
+        }
+
+        if (active)
+        {
+            //body.transform.lossyScale += new Vector3(.01f, .01f, .01f);
+            //excessParticles.transform.localScale += new Vector3(.01f, .01f, .01f);
+            //lightningBeam.transform.localScale += new Vector3(.01f, .01f, .01f);
+            
         }
 
         for (int i = 0; i < lights.Length; i++)

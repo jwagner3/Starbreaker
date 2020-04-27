@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 796079223882313101}
   - component: {fileID: 796079223882313098}
   m_Layer: 0
-  m_Name: Particle System (1)
+  m_Name: Excess Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4766,7 +4766,7 @@ GameObject:
   - component: {fileID: 796079224644092580}
   - component: {fileID: 796079224644092581}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Particle Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5354,7 +5354,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 50000
+    maxNumParticles: 100000
     size3D: 0
     rotation3D: 1
     gravityModifier:
@@ -9621,6 +9621,10 @@ MonoBehaviour:
   moveSpeed: 5
   lights: []
   active: 0
+  playerHP: 0
+  body: {fileID: 796079224644092580}
+  excessParticles: {fileID: 796079223882313101}
+  lightningBeam: {fileID: 1981242675849036877}
 --- !u!1 &2559309877710777230
 GameObject:
   m_ObjectHideFlags: 0
@@ -9633,7 +9637,7 @@ GameObject:
   - component: {fileID: 1981242675849036877}
   - component: {fileID: 2765107303964057330}
   m_Layer: 0
-  m_Name: Particle System (2)
+  m_Name: Lightning Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
