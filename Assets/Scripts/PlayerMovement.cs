@@ -90,8 +90,11 @@ public class PlayerMovement : MonoBehaviour
 
     public int keyCount = 0;
 
+    public AudioSource walkSound;
+
     void Start()
     {
+        walkSound = gameObject.GetComponent<AudioSource>();
         textStyle.wordWrap = true;
         textStyle.fontSize = 20;
         textStyle.font = mainText;
@@ -147,13 +150,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if(Time.deltaTime > 20 && Time.deltaTime < 50)
-        {
-            messagesB[1] = true;
-        }
+        
         TimeMachine();
         Flashlight();
-        //Check what messages are enabled and knows what to show the player
+        if (messagesB[4])
+        {
+            Debug.Log("KEY");
+        }
         
         if (hp <= 0)
         {
@@ -174,17 +177,7 @@ public class PlayerMovement : MonoBehaviour
                 hp = 100;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-
-            for (int i = 0; i > messagesB.Count; i++)
-            {
-                if (messagesB[i])
-                {
-                    messagesB[i] = false;
-                }
-            }
-        }
+        
 
         
         //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
@@ -208,8 +201,16 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
         }
+        if (moveDirection != Vector3.zero)
+        {
 
-        //camera1.transform.gameObject.transform.GetComponent<UserCamera>().inFirstPerson = true;
+            walkSound.Play();
+        }
+        else
+        {
+            walkSound.Stop();
+        }
+        audioLogs = GameObject.FindGameObjectsWithTag("Audio Recording");
 
         if (grounded)
         {
@@ -292,23 +293,25 @@ public class PlayerMovement : MonoBehaviour
         {
             for (int i = 0; i < clues.Length + 1; i++)
             {
-                if (hit.rigidbody == audioLogs[i].GetComponent<Rigidbody>() && Input.GetMouseButtonDown(0))
+                if (hit.rigidbody.tag == "Audio Recording" && Input.GetMouseButtonDown(0))
                 {
-                    audioLogs[i].gameObject.GetComponent<AudioSource>().Play();
+                    Debug.Log("Audio Playing");
+                    hit.rigidbody.gameObject.GetComponent<AudioSource>().Play();
+                    
                     break;
                 }
             }
-            for (int i = 0; i < clues.Length; i++)
-                if (hit.rigidbody == clues[i])
-                {
-                    readout = clues[i].gameObject.GetComponent<string>();
-                }
-                else if (hit.rigidbody == audioLogs[i])
-                {
-                    Debug.Log("Hit");
+            //for (int i = 0; i < clues.Length; i++)
+            //    if (hit.rigidbody == clues[i])
+            //    {
+            //        readout = clues[i].gameObject.GetComponent<string>();
+            //    }
+            //    else if (hit.rigidbody == audioLogs[i])
+            //    {
+            //        Debug.Log("Hit");
 
-                    break;
-                }
+            //        break;
+            //    }
             if (hit.rigidbody.name == "skeleton pillar" && Input.GetMouseButtonDown(0))
             {
                 Debug.Log(messages[2]);
@@ -336,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
             if (messagesB[4])
             {
                 StartCoroutine("ResponseOne");
-                messagesB[5] = true;
+               
             }
             if(hit.rigidbody.name == "Key 3" && Input.GetMouseButtonDown(0))
             {
@@ -351,7 +354,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 messagesB[8] = true;
             }
-            for (int i = 0; i < messages.Count; i++)
+            for (int i = 0; i <= messages.Count; i++)
             {
                 if (messagesB[i])
                 {
@@ -492,8 +495,8 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ResponseOne()
     {
-        yield return new WaitForSecondsRealtime(10.1f);
-        
+        yield return new WaitForSecondsRealtime(3f);
+        messagesB[5] = true;
     }
     public IEnumerator ResponseTwo()
     {

@@ -22,7 +22,7 @@ public class Escape : MonoBehaviour
     }
 
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.tag == "Player" && entropyActive == true)
         {

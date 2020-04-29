@@ -24,6 +24,7 @@ public class Entropy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         playerHP = player.GetComponent<PlayerMovement>().hp;
         if (playerHP <= 0)
         {
