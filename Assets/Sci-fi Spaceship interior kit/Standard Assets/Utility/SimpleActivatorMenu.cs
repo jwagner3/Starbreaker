@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using UnityEditor.UI;
 using UnityEngine;
 
 namespace UnityStandardAssets.Utility

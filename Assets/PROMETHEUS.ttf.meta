@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: b15b41cd6360db64ab10296550207ce0
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: PROMETHEUS
+  fontNames:
+  - PROMETHEUS
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1cf73c53d0787284db06a1902c7be99d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -3,7 +3,12 @@ guid: ecf6b5648ec958f4ab123e42eae6a436
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - camera1: {instanceID: 0}
+  - controller: {fileID: 5199868714741298277, guid: be9e631ec0385c44388469e39a416224,
+      type: 3}
+  - jetFuelBar: {instanceID: 0}
+  - jetParticles: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -4919,7 +4919,6 @@ MonoBehaviour:
   runSpeed1: 35
   runSpeed2: 35
   grounded: 0
-  moveDirection: {x: 0, y: 0, z: 0}
   camera1: {fileID: 0}
   controller: {fileID: 5199868714741298277}
   isJumping: 0
@@ -5012,95 +5011,6 @@ MonoBehaviour:
     m_StretchWidth: 1
     m_StretchHeight: 0
   jetParticles: {fileID: 0}
-  canvas: {fileID: 0}
-  clueFinder:
-    m_Handle: 0
-  textStyle:
-    m_Name: 
-    m_Normal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Hover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Active:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Focused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 0
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
-  mainText: {fileID: 0}
-  textOnScreen: 0
-  entryMessageB: 0
-  messagesB: 
-  clue1: 0
-  clue2: 0
-  clue3: 0
-  clue4: 0
-  clue5: 0
-  messages: []
-  clue1S: This seems to be the skeleton of the captain. Not even space barracudas
-    could strip flesh so quickly
-  clue2S: 
-  clue3S: 
-  clue4S: 
-  clue5S: 
-  readoutText: {fileID: 0}
-  hp: 100
-  keyCount: 0
 --- !u!114 &5199868714741298279
 MonoBehaviour:
   m_ObjectHideFlags: 0

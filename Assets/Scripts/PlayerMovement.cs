@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,16 +10,17 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed1 = 70.0f;
     public float runSpeed2 = 140.0f;
     private float walkSpeed = 90.0f;
-  
+    private float rotateSpeed = 150.0f;
 
     public bool grounded;
-    public Vector3 moveDirection = Vector3.zero;
+    private Vector3 moveDirection = Vector3.zero;
     private bool isWalking;
     private string moveStatus = "idle";
 
     public GameObject camera1;
     public CharacterController controller;
     public bool isJumping;
+    private float myAng = 51.0f;
     public bool canJump = true;
 
     public bool isFuture = true;
@@ -46,140 +45,22 @@ public class PlayerMovement : MonoBehaviour
 
     public ParticleSystem jetParticles;
 
-    //Text bools
-    public GameObject canvas;
-    public Scene clueFinder;
-    public GUIStyle textStyle;
-    public Font mainText;
-    public bool textOnScreen;
-    public List<bool> messagesB = new List<bool>(10);
-    public bool entryMessageB;
-    public bool controlsMessageB;
-    public bool clue1;
-    public bool clue2;
-    public bool warning1;
-    public bool response1;
-    public bool clue3;
-    public bool response2;
-    public bool clue4;
-    public bool keyWarning;
-    public bool deathMessage;
-    public bool entropyReaction;
-    public List<string> messages = new List<string>(10);
-    private string entryMessageS1 = "Press Q to go backwards and forwards in time. Left click to pick up objects and move the camera. Find the monster within the ship!";
-    private string entryMessageS = "Spacetec Salutarian, you’ve served the Empire with grace and aplomb for many years, and we acknowledge your term of service is complete. We, however, require you for one final mission. Project Excelsior has proven to be a failure thus far, as all ships we’ve sent into the great beyond of the universe have failed to return. Until now. We received scattered distress beacons from the Roanoke a few cycles ago. By the time we’d found them, no life signs were left active on board.Please, discover what happened to the Roanoke’s crew and why they returned from what was supposed to be a one way voyage. The Empire of Life rests in your hands, Salutarian.Don’t fail us. -Project Excelsior Lead Astra Montreu";
-    private string clue1S = "Hmm, it seems like this support beam collapsed on him. There are signs of a struggle within the room, indicating he was chased. He’s missing all of his flesh as well, which suggests perhaps a scavenger has made its way onto the ship. I’ll need to proceed with caution. I’ll need his key to investigate the reactor room, along with at least two other keys from various crew members.";
-    private string clue2S = "It seems as if one of the pipes ruptured during a struggle. Chlorine seems to have killed this group of engineers, but they’re all missing their skin, which suggests the aggressor isn’t among their number. What sort of monster could do this?";
-    private string warning1S = "Be advised, Salutarian, we're getting wildly varying readings from the reactor. If you stay on the ship much longer, we won't be able to guarentee your safety. -Project Excelsior Lead Astra Montreu";
-    private string response1S = "There's only a few more rooms to search, Astra, and this might be our only chance to discover what really happened here.";
-    private string clue3S = "Incredible, it’s as if gravity itself has disappeared from this part of the ship. More dead crew. Astra, I’m entering the reactor room next. If something happens, well, I never had the right words for you before. Just know I wanted more for us.For all of us.";
-    private string response2S = "“Comms are breaking… Up…. Get.. Out… Sal”";
-    private string keyWarningS = "Hmm, I need at least three keys from the crew to open the reactor door. Maybe there are some in the other rooms";
-    private string deathMessageS = "TIMELINE COLLAPSED: SALUTARIAN MUST SURVIVE. TIMELINE REWOUND";
-    private string entropyReactionS = "Empire preserve us. It's siphoning power from the reactor. It's... aging, the ship around it. It's Entropy, Astra.";
-
-    private CharacterController playerCharacterController; 
-
-    public Text readoutText;
-
-    public Light flashLight;
-
-    public float hp = 100;
-
-    public GameObject entropy;
-
-    public int keyCount = 0;
-
-    public AudioSource walkSound;
-
     void Start()
     {
-        walkSound = gameObject.GetComponent<AudioSource>();
-        textStyle.wordWrap = true;
-        textStyle.fontSize = 20;
-        textStyle.font = mainText;
-        messages.Add(entryMessageS);
-        messages.Add(entryMessageS1);
-        messages.Add(clue1S);
-        messages.Add(clue2S);
-        messages.Add(warning1S);
-        messages.Add(response1S);
-        messages.Add(clue3S);
-        messages.Add(response2S);
-        messages.Add(keyWarningS);
-        messages.Add(deathMessageS);
 
-        messagesB.Add(entryMessageB);
-        messagesB.Add(controlsMessageB);
-        messagesB.Add(clue1);
-        messagesB.Add(clue2);
-        messagesB.Add(warning1);
-        messagesB.Add(response1);
-        messagesB.Add(clue3);
-        messagesB.Add(response2);
-        messagesB.Add(keyWarning);
-        messagesB.Add(deathMessage);
-        
-      
         controller = GetComponent<CharacterController>();
         isPast = false;
-        messagesB[0] = true;
     }
 
 
     private void OnGUI()
     {
         jetBarStyle.normal.background = jetFuelBar;
-        jetBarStyle.normal.textColor = Color.green;
         GUI.Box(new Rect(260, 30, 30, jetFuel * 5), "Fuel: " + jetFuel, jetBarStyle);
-        GUI.Box(new Rect(200, 30, 30, hp * 5), "Life: " + hp, jetBarStyle);
-
-        
-        //    if (messagesB[0])
-        //    {
-        //        GUI.Box(new Rect(700,300, 300, 150), messages[0], textStyle);
-        //    StartCoroutine("TextDisappear");               
-        //    }
-        //if (messagesB[1])
-        //{
-        //    GUI.Box(new Rect(Screen.height / 2, Screen.width / 2, 50, 30), messages[1], textStyle);
-        //    StartCoroutine("TextDisappear");
-        //}
-        
     }
 
     void Update()
     {
-        
-        TimeMachine();
-        Flashlight();
-        if (messagesB[4])
-        {
-            Debug.Log("KEY");
-        }
-        
-        if (hp <= 0)
-        {
-            if(entropy.GetComponent<Entropy>().active == true)
-            {
-                controller.enabled = false;
-                controller.transform.position = new Vector3(28.4f, 37.38f, 1901.6f);
-                controller.enabled = true;
-                messagesB[9] = true;
-                hp = 100;
-            }
-            else
-            {
-                controller.enabled = false;
-                transform.position = new Vector3(33.9f, 24.5f, 937.5f);
-                controller.enabled = true;
-                messagesB[9] = true;
-                hp = 100;
-            }
-        }
-        
-
-        
         //if (GameObject.FindGameObjectWithTag("Audio Recording").gameObject.GetComponent<AudioSource>().isPlaying == true)
         //{
         //    audioLogPlaying = false;
@@ -199,18 +80,25 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!grounded)
         {
-            moveDirection = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                moveDirection.x -= jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                moveDirection.x += jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                moveDirection.z += jetStrength;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                moveDirection.z -= jetStrength;
+            }
         }
-        if (moveDirection != Vector3.zero)
-        {
 
-            walkSound.Play();
-        }
-        else
-        {
-            walkSound.Stop();
-        }
-        audioLogs = GameObject.FindGameObjectsWithTag("Audio Recording");
+
 
         if (grounded)
         {
@@ -293,110 +181,33 @@ public class PlayerMovement : MonoBehaviour
         {
             for (int i = 0; i < clues.Length + 1; i++)
             {
-                if (hit.rigidbody.tag == "Audio Recording" && Input.GetMouseButtonDown(0))
+                if (hit.rigidbody == audioLogs[i].GetComponent<Rigidbody>() && Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("Audio Playing");
-                    hit.rigidbody.gameObject.GetComponent<AudioSource>().Play();
-                    
+                    audioLogs[i].gameObject.GetComponent<AudioSource>().Play();
                     break;
                 }
             }
-            //for (int i = 0; i < clues.Length; i++)
-            //    if (hit.rigidbody == clues[i])
-            //    {
-            //        readout = clues[i].gameObject.GetComponent<string>();
-            //    }
-            //    else if (hit.rigidbody == audioLogs[i])
-            //    {
-            //        Debug.Log("Hit");
-
-            //        break;
-            //    }
-            if (hit.rigidbody.name == "skeleton pillar" && Input.GetMouseButtonDown(0))
-            {
-                Debug.Log(messages[2]);
-                messagesB[2] = true;
-
-            }
-            if(hit.rigidbody.name == "Crate" && Input.GetMouseButtonDown(0))
-            {
-                messagesB[1] = true;
-            }
-            if (hit.rigidbody.name == "Poison Skeleton" && Input.GetMouseButtonDown(0))
-            {
-                messagesB[3] = true;
-            }
-            if (hit.rigidbody.name == "Key 2" && Input.GetMouseButtonDown(0))
-            {
-                messagesB[4] = true;
-            }
-            if (hit.rigidbody.tag == "Key" && Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("Hit key");
-                Destroy(hit.rigidbody.gameObject);
-                keyCount++;
-            }
-            if (messagesB[4])
-            {
-                StartCoroutine("ResponseOne");
-               
-            }
-            if(hit.rigidbody.name == "Key 3" && Input.GetMouseButtonDown(0))
-            {
-                messagesB[6] = true;
-            }
-            if (messagesB[6])
-            {
-                StartCoroutine("ResponseTwo");
-                
-            }
-            if (hit.rigidbody.tag == "Last Door" && keyCount < 3)
-            {
-                messagesB[8] = true;
-            }
-            for (int i = 0; i <= messages.Count; i++)
-            {
-                if (messagesB[i])
+            for (int i = 0; i < clues.Length; i++)
+                if (hit.rigidbody == clues[i])
                 {
-                    Debug.Log(messagesB[i]);
-                    TextReadout(messages[i]);
-                    StartCoroutine("TextDisappear");
+                    readout = clues[i].gameObject.GetComponent<string>();
                 }
-            }
+                else if (hit.rigidbody == audioLogs[i])
+                {
+                    Debug.Log("Hit");
+
+                    break;
+                }
+
+
 
             //    bullet.GetComponent<Rigidbody>().velocity = (_hit.point - transform.position).normalized * speed;
         }
-    }
-
-
-
-    //Future Machine Controller
-    //If you want to make an object past or future, it must have a collider and a mesh renderer
-
-     public void Flashlight()
-    {
-        if (entropy.GetComponent<Entropy>().active != true)
         {
-            if (Input.GetKeyDown(KeyCode.E) && flashLight.intensity > 0)
-            {
-                flashLight.intensity = 0;
-            }
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-                flashLight.intensity = 10;
-            }
+
         }
-        else
-        {
-            flashLight.intensity = 0;
-        }
-    }
-
-
-
-
-    public void TimeMachine()
-    {
+        //Future Machine Controller
+        //If you want to make an object past or future, it must have a collider and a mesh renderer
         fObjects = GameObject.FindGameObjectsWithTag("Future Object");
         pObjects = GameObject.FindGameObjectsWithTag("Past Object");
 
@@ -415,29 +226,16 @@ public class PlayerMovement : MonoBehaviour
 
             for (int i = 0; i < fObjects.Length; i++)
             {
-                if (fObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
-                    fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
-                if (fObjects[i].gameObject.GetComponent<Collider>() != null)
-                    fObjects[i].gameObject.GetComponent<Collider>().enabled = false;
-                if (fObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
-                {
-                    fObjects[i].gameObject.GetComponent<ParticleSystem>().Stop();
-                }
+                fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
+                fObjects[i].gameObject.GetComponent<Collider>().enabled = false;
 
 
             }
 
             for (int i = 0; i < pObjects.Length; i++)
             {
-                if (pObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
-                    pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
-                if (pObjects[i].gameObject.GetComponent<Collider>() != null)
-                    pObjects[i].gameObject.GetComponent<Collider>().enabled = true;
-                if (pObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
-                {
-                    pObjects[i].gameObject.GetComponent<ParticleSystem>().Play();
-                }
-
+                pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                pObjects[i].gameObject.GetComponent<Collider>().enabled = true;
             }
         }
         else if (isFuture)
@@ -445,30 +243,18 @@ public class PlayerMovement : MonoBehaviour
 
             for (int i = 0; i < fObjects.Length; i++)
             {
-                if (fObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
-                    fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
-                if (fObjects[i].gameObject.GetComponent<Collider>() != null)
-                    fObjects[i].gameObject.GetComponent<Collider>().enabled = true;
-                if (fObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
-                {
-                    fObjects[i].gameObject.GetComponent<ParticleSystem>().Play();
-                }
+                fObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                fObjects[i].gameObject.GetComponent<Collider>().enabled = true;
             }
 
             for (int i = 0; i < pObjects.Length; i++)
             {
-                if (pObjects[i].gameObject.GetComponent<MeshRenderer>() != null)
-                    pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
-                if (pObjects[i].gameObject.GetComponent<Collider>() != null)
-                    pObjects[i].gameObject.GetComponent<Collider>().enabled = false;
-                if (pObjects[i].gameObject.GetComponent<ParticleSystem>() != null)
-                {
-                    pObjects[i].gameObject.GetComponent<ParticleSystem>().Stop();
-                }
+                pObjects[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
+                pObjects[i].gameObject.GetComponent<Collider>().enabled = false;
             }
         }
-    }
 
+    }
 
     public IEnumerator Jetpack()
     {
@@ -476,76 +262,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSecondsRealtime(.5f);
         jetParticles.Stop();
     }
-
-    public IEnumerator TextDisappear()
-    {
-
-        yield return new WaitForSecondsRealtime(15);
-
-        for (int i = 0; i < messages.Count; i++)
-        {
-            if (messagesB[i]) { }
-            
-            messagesB[i] = false;
-            readoutText.text = "";
-
-           
-        }
-     }
-
-    public IEnumerator ResponseOne()
-    {
-        yield return new WaitForSecondsRealtime(3f);
-        messagesB[5] = true;
-    }
-    public IEnumerator ResponseTwo()
-    {
-        yield return new WaitForSecondsRealtime(5);
-        messagesB[7] = true;
-        yield return new WaitForSecondsRealtime(5);
-    }
-    public void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Poison" && isFuture)
-            hp -= Time.deltaTime * 5; ;
-
-        if (other.gameObject.tag == "Entropy")
-        {
-            hp -= Time.deltaTime * 35;
-        }
-
-        if(other.gameObject.name == "Lightning Computer")
-        {
-            hp -= Time.deltaTime * 20;
-        }
-        if (other.tag == "Gravity Field")
-        {
-            gravity = 10;
-        }
-
-        if(other.gameObject.name == "Medkit")
-        {
-            hp += Time.deltaTime * 15;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Gravity Field")
-        {
-            gravity = 30;
-        }
-    }
-
-
-    public void TextReadout(string text)
-    {
-        readoutText.text = text;
-    }
 }
-
-
-
 
 //    void OnControllerColliderHit(ControllerColliderHit hit)
 //    {

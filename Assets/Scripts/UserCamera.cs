@@ -53,23 +53,19 @@ public class UserCamera : MonoBehaviour
 
     void Update()
     {
-        if(userModel.GetComponent<PlayerMovement>().hp <= 0)
+
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            transform.position = new Vector3(28.4f, 37.38f, 1901.6f);
+
+            if (inFirstPerson == true)
+            {
+
+                minDistance = 10;
+                desiredDistance = 15;
+                userModel.SetActive(true);
+                inFirstPerson = false;
+            }
         }
-        //if (Input.GetAxis("Mouse ScrollWheel") < 0)W
-        //{
-        //    inFirstPerson = true;
-        //    if (inFirstPerson == true)
-        //    {
-
-        //        minDistance = 10;
-        //        desiredDistance = 15;
-        //        userModel.SetActive(true);
-        //        inFirstPerson = false;
-        //    }
-        //}
-
 
         if (desiredDistance == 10)
         {
@@ -80,7 +76,6 @@ public class UserCamera : MonoBehaviour
             inFirstPerson = true;
         }
     }
-
 
     //Only Move camera after everything else has been updated
     void LateUpdate()
@@ -118,9 +113,9 @@ public class UserCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(yDeg, xDeg, 0);
 
         // Calculate the desired distance
-        //desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
-        //desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
-        //correctedDistance = desiredDistance;
+        desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
+        desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+        correctedDistance = desiredDistance;
 
         // Calculate desired camera position
         Vector3 vTargetOffset = new Vector3(0, -targetHeight, 0);
